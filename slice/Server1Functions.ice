@@ -4,7 +4,7 @@ module ServerFunctions{
 	
 	interface Server1{
 		void getClientData(Map dataInput);
-		string csvReader(string csvFilePath);
+		string txtReader();
 		bool compareInputWithSaveData();
 	
 	};

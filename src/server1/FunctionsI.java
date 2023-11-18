@@ -2,7 +2,9 @@ package server1;
 
 import Ice.Current;
 
+import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.Reader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -13,8 +15,9 @@ import com.opencsv.CSVReader;
 public class FunctionsI extends ServerFunctions._Server1Disp{
 	
 	private HashMap<String, String> clientData;
-	private HashMap<String, String> csvData;
-
+	private Map<String, String> txtFileData;
+	private String txtFilePath = (System.getProperty("user.dir") + "/Resources/DB/PretendingBeDB.txt");
+			
 	/*
 	 * Get client data and save into clientData
 	 */
@@ -22,9 +25,11 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
 	public void getClientData(Map<String, String> dataInput, Current current) {
 		// TODO Auto-generated method stub
 		try {
-			for(HashMap.Entry<String, String> entry : dataInput.entrySet()) {
-				clientData.put(entry.getKey(), entry.getValue());
-			}
+			//Instance HashMap class
+			clientData = new HashMap<>();
+			//Save all dataInputs value directly into clientData
+			clientData.putAll(dataInput);
+		//Exception control
 		} catch (Exception e) {
 			System.err.println("Error al guardar datos del cliente: " + e.getMessage());
 		}
@@ -35,36 +40,24 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
 	 * Read csv data and save into csvData
 	 */
 	@Override
-	public String csvReader(String csvFilePath, Current current) {
+	public String txtReader(Current current) {
 		// TODO Auto-generated method stub
 
-        try (CSVReader csvReader = new CSVReader(new FileReader(csvFilePath))) {
-            List<String[]> records = csvReader.readAll();
-
-            //First file of csv contains keys
-            String[] headers = records.get(0);
-
-            //Create HashMap to storage csv values
-            csvData = new HashMap<>();
-
-            //Iterating upon csv files
-            for (int i = 1; i < records.size(); i++) {
-                String[] values = records.get(i);
-
-                //Iterating upon columns and save data into HashMap
-                for (int j = 0; j < headers.length; j++) {
-                    String header = headers[j];
-                    String value = values[j];
-                    //Save Key-Value inside HashMap
-                    csvData.put(header, value);
-                }
-            }
-
-            //Print in consolde resulted HashMap
-            System.out.println("Lectura de csv resultante: " + csvData);
-
-        } catch (Exception e) {
-        		System.err.println("Error al trabajar con archivo csv:" + e.getMessage());
+        try {
+        	//Create reader for file
+        	BufferedReader reader = new BufferedReader(new FileReader(txtFilePath));
+        	//Create variables to save data
+        	String line;
+        	int id = 0;
+        	//While data (file) exist read info
+        	while((line = reader.readLine()) != null) {
+    			//Save txt info into txtFileData - with format: "Client X": "txt line"
+    			txtFileData.put(("Client " + id), line);
+        	}
+        	reader.close();
+        //Input/Output exception control
+        } catch (IOException e) {
+        		System.err.println("Error al trabajar con archivo .txt: " + e.getMessage());
         }
 		return null;
 	}
@@ -78,10 +71,12 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
 		// TODO Auto-generated method stub
 		try {
 			boolean result = false;
+			//Instance HashMap class
+			
 			for(HashMap.Entry<String, String> entry : clientData.entrySet()) {
 				Object value = entry.getValue();
 				
-				if(csvData.containsValue(value)) {
+				if(txtFileData.containsValue(value)) {
 					result = true;
 					break;
 				}

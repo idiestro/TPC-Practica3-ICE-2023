@@ -30,11 +30,12 @@ public class Server1 implements Runnable{
 					ic = Ice.Util.initialize();
 					//Create ObjectAdapter to listen in specified port
 					Ice.ObjectAdapter adapter = ic.createObjectAdapterWithEndpoints(
-							"SimpleCalculadoraAdapter", ("default -p " + serverListenPort));
-					//Create Calculadora object
-					Ice.Object object = new CalculadoraI();
-					//Add Calculadora object to adapter
-					ObjectPrx add = adapter.add(object, ic.stringToIdentity("SimpleCalculadora"));
+							"SimpleFunctionsAdapter", ("default -p " + serverListenPort));
+					System.out.println("-----Server Connected-----");
+					//Create Functions object
+					Ice.Object object = new FunctionsI();
+					//Add Functions object to adapter
+					ObjectPrx add = adapter.add(object, ic.stringToIdentity("SimpleFunctions"));
 					//Activate adapter to listen connections
 					adapter.activate();
 					//Wait until shutdown
@@ -51,6 +52,8 @@ public class Server1 implements Runnable{
 					System.err.println(e.getMessage());
 					//Change status 
 					status = 1;
+					System.out.println("-----Server Disconnected-----");
+
 				}
 				
 				//Clean and exit
@@ -62,12 +65,16 @@ public class Server1 implements Runnable{
 						ic.close();
 						//Destroy connection
 						ic.destroy();
+						System.out.println("-----Server Disconnected-----");
+
 					//General exceptions
 					} catch (Exception e) {
 						//Print error message
 						System.err.println(e.getMessage());
 						//Change status
 						status = 1;
+						System.out.println("-----Server Disconnected-----");
+
 					}
 				}
 				//Close system if status==1
