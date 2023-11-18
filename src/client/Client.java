@@ -59,6 +59,7 @@ public class Client implements Runnable{
 					//Use Calculadora functions
 					server1.getClientData(testClientData);
 					server1.txtReader();
+					System.out.println(server1.compareInputWithSaveData());
 					
 
 					

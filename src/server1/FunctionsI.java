@@ -44,6 +44,7 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
 		// TODO Auto-generated method stub
 
         try {
+        	txtFileData = new HashMap<>();
         	//Create reader for file
         	BufferedReader reader = new BufferedReader(new FileReader(txtFilePath));
         	//Create variables to save data
@@ -76,7 +77,7 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
 			for(HashMap.Entry<String, String> entry : clientData.entrySet()) {
 				Object value = entry.getValue();
 				
-				if(txtFileData.containsValue(value)) {
+				if(txtFileData.values().contains(value)) {
 					result = true;
 					break;
 				}
