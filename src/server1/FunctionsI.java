@@ -5,6 +5,7 @@ import Ice.Current;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.Reader;
+import java.lang.reflect.Array;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -15,7 +16,7 @@ import com.opencsv.CSVReader;
 public class FunctionsI extends ServerFunctions._Server1Disp{
 	
 	private HashMap<String, String> clientData;
-	private Map<String, String> txtFileData;
+	private String [] txtFileData;
 	private String txtFilePath = (System.getProperty("user.dir") + "/Resources/DB/PretendingBeDB.txt");
 			
 	/*
@@ -44,7 +45,6 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
 		// TODO Auto-generated method stub
 
         try {
-        	txtFileData = new HashMap<>();
         	//Create reader for file
         	BufferedReader reader = new BufferedReader(new FileReader(txtFilePath));
         	//Create variables to save data
@@ -53,7 +53,7 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
         	//While data (file) exist read info
         	while((line = reader.readLine()) != null) {
     			//Save txt info into txtFileData - with format: "Client X": "txt line"
-    			txtFileData.put(("Client " + id), line);
+    			txtFileData = line.split(" ");
         	}
         	reader.close();
         //Input/Output exception control
@@ -71,21 +71,20 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
 	public boolean compareInputWithSaveData(Current current) {
 		// TODO Auto-generated method stub
 		try {
+			//Declare boolean for search result
 			boolean result = false;
-			//Instance HashMap class
-			
-			for(HashMap.Entry<String, String> entry : clientData.entrySet()) {
-				Object value = entry.getValue();
+			//Search name, firstSurname and secondSurname coincidence
+			if(	(txtFileData[0] == clientData.get("name")) && 
+				(txtFileData[1] == clientData.get("firstSurname")) &&
+				(txtFileData[2] == clientData.get("secondSurname"))) {
 				
-				if(txtFileData.values().contains(value)) {
-					result = true;
-					break;
-				}
+				//If client is on txt file, search result is true
+				result = true;
 			}
 			return result;
 			
 		}catch(Exception e) {
-    		System.err.println("Error al comparar HashMap de cliente y csv:" + e.getMessage());
+    		System.err.println("Error al comparar datos de cliente y PretendingBeDB.txt:" + e.getMessage());
     		return false;
 
 		}
