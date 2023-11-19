@@ -18,18 +18,37 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
 	private HashMap<String, String> clientData;
 	private String [] txtFileData;
 	private String txtFilePath = (System.getProperty("user.dir") + "/Resources/DB/PretendingBeDB.txt");
+	
+	private static int counter = 0;
 			
 	/*
 	 * Get client data and save into clientData
 	 */
 	@Override
-	public void getClientData(Map<String, String> dataInput, Current current) {
+	public void getClientData(String dataInput, Current current) {
 		// TODO Auto-generated method stub
 		try {
 			//Instance HashMap class
 			clientData = new HashMap<>();
-			//Save all dataInputs value directly into clientData
-			clientData.putAll(dataInput);
+			
+			switch(counter) {
+				case 0: 
+					clientData.put("name", dataInput);
+					break;
+				case 1: 
+					clientData.put("firstSurname", dataInput);
+					break;
+				case 2: 
+					clientData.put("secondSurname", dataInput);
+					break;
+				case 3: 
+					clientData.put("email", dataInput);
+					break;
+				case 4: 
+					clientData.put("phone", dataInput);
+					break;
+			}
+			counter++;
 		//Exception control
 		} catch (Exception e) {
 			System.err.println("Error al guardar datos del cliente: " + e.getMessage());
@@ -74,10 +93,9 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
 			//Declare boolean for search result
 			boolean result = false;
 			//Search name, firstSurname and secondSurname coincidence
-			if(	(txtFileData[0] == clientData.get("name")) && 
-				(txtFileData[1] == clientData.get("firstSurname")) &&
-				(txtFileData[2] == clientData.get("secondSurname"))) {
-				
+			if(	(txtFileData[0].toLowerCase().contains(clientData.get("name").toLowerCase())) && 
+				(txtFileData[1].toLowerCase().contains(clientData.get("firstSurname").toLowerCase())) &&
+				(txtFileData[2].toLowerCase().contains(clientData.get("secondSurname").toLowerCase()))) {
 				//If client is on txt file, search result is true
 				result = true;
 			}

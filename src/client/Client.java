@@ -1,14 +1,13 @@
 package client;
 
-import Utils.Utils;
+import Utils.*;
 import java.util.HashMap;
-import java.util.Map;
+
 
 public class Client implements Runnable{
 	
 	private final HashMap <String, Integer> serverPorts;
-	private HashMap <String, String> testClientData;
-
+	
 	/*
 	 * Constructor
 	 */
@@ -20,19 +19,9 @@ public class Client implements Runnable{
 		//Save ports from config into serverPorts HashMap
 		serverPorts.put("server1", Integer.parseInt(prop.getProperty("SERVER1_PORT")));
 		serverPorts.put("server2", Integer.parseInt(prop.getProperty("SERVER2_PORT")));
-		
-		//TestData
-		testClientData = new HashMap <>();
-		testClientData.put("name", "Nacho");
-		testClientData.put("firstSurname", "Diestro");
-		testClientData.put("secondSurname", "Gil");
-		testClientData.put("email", "test@test.com");
-		testClientData.put("phone", "666666666");
-		
-		System.out.println("----TEST----");
-		System.out.println("----Values for test:----");
-		System.out.println(testClientData);
-		
+		//Instace user interface
+		new TextIO4GUI("Consulta de Usuarios");
+	
 	}
 	
 	public void run() {
@@ -56,12 +45,21 @@ public class Client implements Runnable{
 						//Error message
 						throw new Error("Invalid proxy");
 					
-					//Use Calculadora functions
-					server1.getClientData(testClientData);
+
+					//Declare data String
+					String clientData;
+					TextIO4GUI.putln("Bienvenido al sistema de consulta de usuarios");
+					TextIO4GUI.putln("Escribe, en el orden indicado y de uno en uno:");
+					TextIO4GUI.putln("Nombre, primer apellido, segundo apellido, email y teléfono");
+					//Send user data to server
+					for(int i=0; i<5; i++) {
+						clientData = TextIO4GUI.getlnString();
+						server1.getClientData(clientData);
+
+					}
 					server1.txtReader();
 					System.out.println(server1.compareInputWithSaveData());
 					
-
 					
 							//Ice.IntHolder coc=new Ice.IntHolder(), res=new Ice.IntHolder(); // Inicicialización de los datos Holder (parámetros de entrada y salida)
 							//calculadora.cociente(6,5, coc, res);
