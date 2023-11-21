@@ -12,3 +12,16 @@
 /_Server1Operations.java
 /_Server1OperationsNC.java
 /Callback_Server1_txtReader.java
+/Callback_Server2_compareInputWithSaveData.java
+/Callback_Server2_getClientData.java
+/Callback_Server2_txtWriter.java
+/Callback_Server2_validateNotEmptyData.java
+/Server2.java
+/Server2Holder.java
+/Server2Prx.java
+/Server2PrxHelper.java
+/Server2PrxHolder.java
+/_Server2Disp.java
+/_Server2Operations.java
+/_Server2OperationsNC.java
+/Callback_Server2_validateSavedInfo.java
