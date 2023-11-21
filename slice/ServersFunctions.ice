@@ -10,7 +10,7 @@ module ServerFunctions{
 	};
 	interface Server2{
 		void getClientData(Map dataInput);
-		string txtWriter();
+		void txtWriter();
 		void validateSavedInfo(out bool result);
 	
 	};

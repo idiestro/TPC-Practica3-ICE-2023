@@ -49,7 +49,7 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
         	String line;
         	//While data (file) exist read info
         	while((line = reader.readLine()) != null) {
-    			//Save txt info into txtFileData - with format: "Client X": "txt line"
+    			//Save txt info into txtFileData
     			txtFileData = line.split(" ");
         	}
         	reader.close();
