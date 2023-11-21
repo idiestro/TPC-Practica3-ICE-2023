@@ -30,12 +30,12 @@ public class Server1 implements Runnable{
 					ic = Ice.Util.initialize();
 					//Create ObjectAdapter to listen in specified port
 					Ice.ObjectAdapter adapter = ic.createObjectAdapterWithEndpoints(
-							"SimpleFunctionsAdapter", ("default -p " + serverListenPort));
+							"SimpleFunctionsIAdapter", ("default -p " + serverListenPort));
 					System.out.println("-----Server Connected-----");
 					//Create Functions object
 					Ice.Object object = new FunctionsI();
 					//Add Functions object to adapter
-					ObjectPrx add = adapter.add(object, ic.stringToIdentity("SimpleFunctions"));
+					ObjectPrx add = adapter.add(object, ic.stringToIdentity("SimpleFunctionsI"));
 					//Activate adapter to listen connections
 					adapter.activate();
 					//Wait until shutdown
