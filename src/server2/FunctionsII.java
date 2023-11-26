@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.io.FilterWriter;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +73,7 @@ public class FunctionsII extends ServerFunctions._Server2Disp{
 			//While data (file) exist read info
 			while((line = reader.readLine()) != null) {
 				//Validate if client name is writed in txt
-				result = line.contains(clientData.get("name")) ? true:false;
+				result.value = line.contains(clientData.get("name"));
 			}
 			reader.close();
 			//Input/Output exception control

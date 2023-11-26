@@ -39,7 +39,7 @@ public class Client implements Runnable{
 					System.out.println("------Client connected-----");
 					
 					//Get server1 proxy
-					Ice.ObjectPrx baseServer1 = ic.stringToProxy(("SimpleFunctions:default -p " + serverPorts.get("server1")));
+					Ice.ObjectPrx baseServer1 = ic.stringToProxy(("SimpleFunctionsI:default -p " + serverPorts.get("server1")));
 					//Make secure cast of server1
 					ServerFunctions.Server1Prx server1 = ServerFunctions.Server1PrxHelper.checkedCast(baseServer1);
 					//Validate server1 != null
@@ -48,13 +48,13 @@ public class Client implements Runnable{
 						throw new Error("Invalid proxy");
 					
 					//Get server2 proxy
-					//Ice.ObjectPrx baseServer2 = ic.stringToProxy(("SimpleFunctions:default -p " + serverPorts.get("server2")));
+					Ice.ObjectPrx baseServer2 = ic.stringToProxy(("SimpleFunctionsII:default -p " + serverPorts.get("server2")));
 					//Make secure cast of server2
-					//ServerFunctions.Server1Prx server2 = ServerFunctions.Server1PrxHelper.checkedCast(baseServer2);
+					ServerFunctions.Server2Prx server2 = ServerFunctions.Server2PrxHelper.checkedCast(baseServer2);
 					//Validate server2 != null
-					//if (server2 == null)
+					if (server2 == null)
 						//Error message
-						//throw new Error("Invalid proxy");
+						throw new Error("Invalid proxy");
 					
 					
 					//Server 1 functions
@@ -82,20 +82,41 @@ public class Client implements Runnable{
 					//Read server db values
 					server1.txtReader();
 					//Declare Ice Holder to save search result
-					Ice.BooleanHolder searchResult = new Ice.BooleanHolder();
+					Ice.BooleanHolder searchResultServer1 = new Ice.BooleanHolder();
 					//Compare if user is on db
-					server1.compareInputWithSaveData(searchResult);
+					server1.compareInputWithSaveData(searchResultServer1);
 					System.out.println("Server 1 search done");
-					System.out.println("Search Result = " + searchResult.value);
+					System.out.println("Search Result = " + searchResultServer1.value);
 					
 					//Create result message
-					String searchResultMessage = searchResult.value? 
+					String searchResultMessageServer1 = searchResultServer1.value? 
 					"El cliente ya se encuentra en la base de datos":
 					"El cliente no se encuentra en la base de datos, llamamos a Server 2 para almacenarlo";
-					TextIO4GUI.putln(searchResultMessage);
+					TextIO4GUI.putln(searchResultMessageServer1);
 					
 					
-					//Server 2 functions
+					//Only use Server2 if client info isn't in bd
+					if(!searchResultServer1.value) {
+						//Server 2 functions
+						System.out.println("Server 2 persistence is working");
+						server2.getClientData(clientData);
+						server2.txtWriter();
+						Ice.BooleanHolder searchResultServer2 = new Ice.BooleanHolder();
+						server2.validateSavedInfo(searchResultServer2);
+						System.out.println("Server 2 persistence is done");
+						System.out.println("Persistence Result = " + searchResultServer2.value);
+						//Create result message
+						String searchResultMessageServer2 = searchResultServer2.value? 
+						"El cliente se ha guardado correctamente en la base de datos":
+						"El cliente no ha podido ser guardado correctamente en la base de datos";
+						TextIO4GUI.putln(searchResultMessageServer2);
+						
+					
+					
+						
+						
+					}
+
 
 
 					

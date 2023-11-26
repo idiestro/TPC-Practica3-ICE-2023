@@ -15,7 +15,7 @@ public class Server2 implements Runnable{
 	
 	public Server2() throws Exception {
 		java.util.Properties prop =  Utils.getConfigProperties();
-		serverListenPort = Integer.parseInt(prop.getProperty("SERVER1_PORT"));
+		serverListenPort = Integer.parseInt(prop.getProperty("SERVER2_PORT"));
 	}
 	
 	public void run() {
@@ -30,12 +30,12 @@ public class Server2 implements Runnable{
 					ic = Ice.Util.initialize();
 					//Create ObjectAdapter to listen in specified port
 					Ice.ObjectAdapter adapter = ic.createObjectAdapterWithEndpoints(
-							"SimpleFunctionsAdapter", ("default -p " + serverListenPort));
+							"SimpleFunctionsIIAdapter", ("default -p " + serverListenPort));
 					System.out.println("-----Server Connected-----");
 					//Create Functions object
 					Ice.Object object = new FunctionsII();
 					//Add Functions object to adapter
-					ObjectPrx add = adapter.add(object, ic.stringToIdentity("SimpleFunctions"));
+					ObjectPrx add = adapter.add(object, ic.stringToIdentity("SimpleFunctionsII"));
 					//Activate adapter to listen connections
 					adapter.activate();
 					//Wait until shutdown
