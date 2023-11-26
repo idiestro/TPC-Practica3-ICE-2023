@@ -16,7 +16,7 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
 	
 	private static final long serialVersionUID = 1L;
 	private HashMap<String, String> clientData;
-	private String[] txtFileData;
+	private ArrayList<String> txtFileData;
 	private String txtFilePath = (System.getProperty("user.dir") + "/Resources/DB/PretendingBeDB.txt");
 	
 			
@@ -70,18 +70,21 @@ public class FunctionsI extends ServerFunctions._Server1Disp{
 
 	public void compareInputWithSaveData(BooleanHolder result, Current current) {
 		// TODO Auto-generated method stub
+		result.value = false;
 		try {
 			for (String txtFileDatum : txtFileData) {
-				//Declare boolean for search result
-				if (txtFileDatum.toLowerCase().contains(clientData.get("name").toLowerCase()) || txtFileDatum.toLowerCase().contains(clientData.get("firstSurname").toLowerCase())) {
-					result = true;
+				//Result condition
+				if (txtFileDatum.toLowerCase().contains(clientData.get("name").toLowerCase()) &&
+					txtFileDatum.toLowerCase().contains(clientData.get("firstSurname").toLowerCase()) &&
+					txtFileDatum.toLowerCase().contains(clientData.get("secondSurname").toLowerCase())) {
+					result.value = true;
 					break;
 				}
 			}
 
 		}catch(Exception e) {
 			System.err.println("Error al comparar datos de cliente y PretendingBeDB.txt:" + e.getMessage());
-			result = false;
+			result.value = false;
 		}
 
 	}
